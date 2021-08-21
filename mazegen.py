@@ -21,28 +21,27 @@ def main(size):
     #         maze[y][x] = 1
     #         maze[y + d[1]][x + d[0]] = 1
 
-
-    available_pivots = [(x, y) for x in range(2, size-2, 2) for y in range(2, size-2, 2)]
+    pivots = [(x, y) for x in range(2, size-2, 2) for y in range(2, size-2, 2)]
+    random.shuffle(pivots)
+    available_pivots = set(pivots)
 
     going = False
     while len(available_pivots)>0:
         if going:
             d = rand_turn(d)
+            available_pivots.remove(pivot)
         else:
-            pivot = random.choice(available_pivots)
             d = rand_dir()
-        
-        available_pivots.remove(pivot)
-        
-        hn = (pivot[0]+d[0], pivot[1]+d[1])
-        n  = (hn[0]+d[0], hn[1]+d[1])
+            pivot = available_pivots.pop()
 
         maze[pivot[1]][pivot[0]] = 1
-        maze[hn[1]][hn[0]] = 1
-
-        going = n in available_pivots and is_in(n, size)
         
-        pivot = n
+        half_p = (pivot[0]+d[0], pivot[1]+d[1])
+        pivot  = (half_p[0]+d[0], half_p[1]+d[1])
+
+        maze[half_p[1]][half_p[0]] = 1
+
+        going = pivot in available_pivots and is_in(pivot, size)
 
     return maze
 
@@ -69,4 +68,4 @@ def display2d(m):
         print()
 
 if __name__ == "__main__":
-    main(11)
+    display2d(main(11))

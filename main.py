@@ -43,10 +43,13 @@ def main():
                     maze = mg.main(msize)
                     Wall.from_maze(maze)
 
-                elif event.key == pygame.K_v:
+                elif event.key == pygame.K_n:
                     flags ^= pygame.NOFRAME
                     screen = pygame.display.set_mode((win_size, win_size), flags)
                     Sprite.screen = screen
+                
+                elif event.key == pygame.K_ESCAPE:
+                    running = False
             
             for sprite in Sprite.all_sprites:
                 sprite.on_event(event)
